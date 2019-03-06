@@ -4,22 +4,40 @@
       <el-button type="primary">发表文章</el-button>
     </div>
     <div class="content">
-      <el-row :gutter="20">
-        <el-col span="18" class="article-list-wrap">
-            <div v-for="item in articleList" :key="item.id">
-                <div class="article-item">
-                    <img width="45" height="45" src="../assets/logo.png"/>
-                    <div class="article-descript">
-                        <div><el-tag type="danger">标签五</el-tag>标题</div>
-                        <div class="acticle-time">
-                            <div><span>admin</span><span>2019-03-03</span></div>
-                            <div><i class="el-icon-document"></i>0</div>
-                        </div>
-                    </div>
+      <el-row :gutter="30">
+        <el-col :span="18" class="article-list-wrap">
+          <div v-for="item in articleList" :key="item.id">
+            <div class="article-item">
+              <img width="45" height="45" src="../assets/logo.png">
+              <div class="article-descript">
+                <div>
+                  <el-tag type="danger">vue</el-tag>标题
                 </div>
+                <div class="acticle-time">
+                  <div>
+                    <span>admin</span>
+                    <span>2019-03-03</span>
+                  </div>
+                  <div>
+                    <i class="el-icon-document"></i>
+                    <span>1</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <div class="pagination-wrap">
+          <el-pagination background layout="prev, pager, next" :page-size="pageSize" :total="100"></el-pagination>
+          </div>
         </el-col>
-        <el-col span="6">公告</el-col>
+        <el-col :span="6">
+          <el-card class="box-card">
+            <div slot="header" class="clearfix">
+              <span>公告</span>
+            </div>
+            <div v-for="o in 4" :key="o" class="text item">{{'列表内容 ' + o }}</div>
+          </el-card>
+        </el-col>
       </el-row>
     </div>
   </div>
@@ -30,11 +48,15 @@ export default {
   name: "Home",
   data() {
     return {
-        articleList:[{
-            id:'000001',
-        },{
-            id:'000002',
-        }]
+      pageSize:5,
+      articleList: [
+        {
+          id: "000001"
+        },
+        {
+          id: "000002"
+        }
+      ]
     };
   }
 };
@@ -42,7 +64,7 @@ export default {
 
 <style lang="scss">
 .home {
-    background: #f2f2f2;
+  background: #f2f2f2;
   .publish-article-wrap {
     padding: 4px 200px;
     background: #fff;
@@ -51,29 +73,61 @@ export default {
   }
   .content {
     padding: 20px 200px;
-    .article-list-wrap{
-        .article-item{
+    .article-list-wrap {
+      background: #fff;
+      .article-item {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid #f2f2f2;
+        .article-descript {
+          display: flex;
+          flex: 1;
+          flex-direction: column;
+          align-items: flex-start;
+          padding-left: 10px;
+          .el-tag {
+            background: #ff5722;
+            color: #fff;
+            padding: 0 4px;
+            font-size: 10px;
+            height: 24px;
+            line-height: 24px;
+            margin-right: 6px;
+          }
+          .acticle-time {
+            width: 100%;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            padding: 15px;
-            border-bottom: 1px solid #f2f2f2;
-            .article-descript{
-                display: flex;
-                flex: 1;
-                flex-direction: column;
-                align-items: flex-start;
-                padding-left: 10px;
-            .acticle-time{
-                width: 100%;
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                color: #888;
-                padding-top: 8px;
+            color: #888;
+            padding-top: 8px;
+            span {
+              padding: 0 4px;
             }
-            }
+          }
         }
-        background: #fff;
+      }
+      .pagination-wrap{
+        padding: 30px 0;
+      }
+    }
+    .box-card {
+      text-align: left;
+      .text {
+        font-size: 14px;
+      }
+      .item {
+        margin-bottom: 18px;
+      }
+      .clearfix:before,
+      .clearfix:after {
+        display: table;
+        content: "";
+      }
+      .clearfix:after {
+        clear: both;
+      }
     }
   }
 }

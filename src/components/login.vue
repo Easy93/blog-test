@@ -57,6 +57,7 @@
 import axios from "axios";
 export default {
   name: "Login",
+  props: ["tabIndex"],
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
@@ -102,6 +103,16 @@ export default {
         checkPass: [{ validator: validatePass2, trigger: "blur" }]
       }
     };
+  },
+  watch:{
+    tabIndex(newIndex,oldIndex){
+      console.log(newIndex)
+      if(newIndex){
+        this.activeName = "register"
+      }else{
+        this.activeName = "login"
+      }
+    }
   },
   methods: {
     handleClick(tab, event) {
@@ -151,7 +162,6 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
 .login {
-  padding: 50px;
   margin: 0 auto;
   .el-tabs {
     width: 400px;
