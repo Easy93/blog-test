@@ -54,7 +54,8 @@
 </template>
 
 <script>
-import axios from "axios";
+import {login} from "@/api/user";
+import { mapState, mapMutations, mapActions } from "vuex";
 export default {
   name: "Login",
   props: ["tabIndex"],
@@ -92,8 +93,6 @@ export default {
       },
       registerForm: {
         username: "",
-
-        
         pass: "",
         checkPass: ""
       },
@@ -106,35 +105,31 @@ export default {
       }
     };
   },
-  watch:{
-    tabIndex(newIndex,oldIndex){
-      console.log(newIndex)
-      if(newIndex){
-        this.activeName = "register"
-      }else{
-        this.activeName = "login"
-      }
-    }
-  },
   methods: {
+    ...mapMutations({
+      setUsername:'setUsername',
+      setHasLogin:'setHasLogin'
+    }),
+    // ...mapActions({})
     handleClick(tab, event) {
       console.log(tab, event);
     },
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
-          axios
-            .post("/apis/user/login", {
+          login({
               username: this.loginForm.username,
               password: this.loginForm.password
             })
             .then(res => {
               if (res.data.code == 1) {
+                this.setUsername(this.loginForm.username);
+                this.setHasLogin(true);
                 this.$message({
                   message: res.data.msg,
                   type: "success"
                 });
-                this.$router.push({name:"home"})
+                this.$emit("handleClose");
               } else {
                 this.$message({
                   message: res.data.errMsg,
@@ -144,7 +139,7 @@ export default {
             })
             .catch(res => {
               this.$message({
-                message: "服务器错误",
+                message: res,
                 type: "error"
               });
             });
@@ -157,6 +152,11 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     }
+  },
+  mounted() {
+    this.tabIndex
+      ? (this.activeName = "register")
+      : (this.activeName = "login");
   }
 };
 </script>

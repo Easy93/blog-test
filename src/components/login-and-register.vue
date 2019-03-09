@@ -1,6 +1,6 @@
 <template>
-  <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose">
-    <Login :tabIndex="tabIndex" />
+  <el-dialog :visible.sync="dialogVisible" width="30%" :before-close="handleClose" v-if="dialogVisible">
+    <Login :tabIndex="tabIndex" @handleClose="handleClose"/>
   </el-dialog>
 </template>
 
@@ -15,8 +15,8 @@ export default {
   },
   methods: {
     init(tabIndex) {
-      this.tabIndex = tabIndex;
       this.dialogVisible = true;
+      this.tabIndex = tabIndex;
     },
     handleClose(done) {
       this.dialogVisible = false;

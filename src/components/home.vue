@@ -96,23 +96,6 @@ export default {
       padding: 30px 0;
     }
   }
-  .box-card {
-    text-align: left;
-    .text {
-      font-size: 14px;
-    }
-    .item {
-      margin-bottom: 18px;
-    }
-    .clearfix:before,
-    .clearfix:after {
-      display: table;
-      content: "";
-    }
-    .clearfix:after {
-      clear: both;
-    }
-  }
 }
 </style>
 

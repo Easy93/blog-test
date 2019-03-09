@@ -3,18 +3,20 @@
     <div class="menu-wrap">
       <el-menu :default-active="activeIndex" mode="horizontal" @select="handleSelect">
         <el-menu-item index="1">首页</el-menu-item>
-        <el-submenu index="2">
-          <template slot="title">1</template>
-          <el-menu-item index="2-1">选项1</el-menu-item>
-          <el-menu-item index="2-2">选项2</el-menu-item>
-          <el-menu-item index="2-3">选项3</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="2">1</el-menu-item>
         <el-menu-item index="3">2</el-menu-item>
         <el-menu-item index="4">3</el-menu-item>
         <el-menu-item index="5">4</el-menu-item>
         <el-menu-item index="6">5</el-menu-item>
-        <div class="right-menu">
-          <el-button @click="login">登录</el-button>
+        <div v-if="hasLogin" class="right-menu">
+          <el-button @click="goPersonalCenter">个人中心</el-button>
+          <el-submenu index="7">
+            <template slot="title">{{username}}</template>
+            <el-menu-item index="logout">退出登录</el-menu-item>
+          </el-submenu>
+        </div>
+        <div v-else class="right-menu">
+          <el-button @click="login">登录{{username}}</el-button>
           <el-button @click="register">注册</el-button>
         </div>
       </el-menu>
@@ -45,24 +47,41 @@
 
 <script>
 import LoginAndRegister from "./login-and-register";
+import { mapState, mapMutations } from "vuex";
 export default {
   data() {
     return {
       activeIndex: "1"
     };
   },
+  computed: {
+    ...mapState({
+      username: state => state.username,
+      hasLogin: state => state.hasLogin,
+      avatar: state => state.avatar
+    })
+  },
   methods: {
+    ...mapMutations({
+      setLogout:'setLogout'
+    }),
     handleSelect(key, keyPath) {
-      console.log(key, keyPath);
-      this.$router.push({
-        name:'home'
-      })
+      if(key=='logout'){
+        this.setLogout();
+      }else{
+        this.$router.push({
+          name: "home"
+        });
+      }
     },
     login() {
       this.$refs.model.init(0);
     },
     register() {
       this.$refs.model.init(1);
+    },
+    goPersonalCenter() {
+      console.log("跳转个人中心");
     }
   },
   components: {
@@ -79,6 +98,8 @@ export default {
       margin: 0 200px;
       .right-menu {
         float: right;
+        display: flex;
+        align-items: center;
         .el-button {
           border: none;
           border-radius: 0;
@@ -95,6 +116,23 @@ export default {
   }
   .content {
     padding: 20px 200px;
+    .box-card {
+      text-align: left;
+      .text {
+        font-size: 14px;
+      }
+      .item {
+        margin-bottom: 18px;
+      }
+      .clearfix:before,
+      .clearfix:after {
+        display: table;
+        content: "";
+      }
+      .clearfix:after {
+        clear: both;
+      }
+    }
   }
 }
 </style>

@@ -10,9 +10,9 @@ const http = axios.create({
 
 http.adornUrl = actionName => {
   return (
-    (process.env.NODE_ENV == "production" ? process.env.ROOT : "/proxyApi/") +
+    (process.env.NODE_ENV == "production" ? process.env.ROOT : "/apis/") +
     actionName
   );
 };
 
-export default http;
+export default http
